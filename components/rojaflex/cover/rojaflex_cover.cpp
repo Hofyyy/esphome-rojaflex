@@ -7,7 +7,7 @@
 
 namespace rojaflex {
 
-static const char *const TAG_COVER = "rojaflex.cover";
+static const char *const TAG = "rojaflex.cover";
 
 void RojaflexCover::setup() {
   // Position unknown until first motor feedback or remote frame.
@@ -48,7 +48,7 @@ void RojaflexCover::publish_status_now() {
 
 void RojaflexCover::dump_config() {
   LOG_COVER("", "Rojaflex Cover", this);
-  ESP_LOGCONFIG(TAG_COVER, "  Channel: %u", static_cast<unsigned>(channel_));
+  ESP_LOGCONFIG(TAG, "  Channel: %u", static_cast<unsigned>(channel_));
 }
 
 float RojaflexCover::get_setup_priority() const {
