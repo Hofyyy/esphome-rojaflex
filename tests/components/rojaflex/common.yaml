@@ -1,0 +1,49 @@
+cc1101:
+  id: cc1101_radio
+  cs_pin: ${cs_pin}
+  gdo0_pin: ${gdo0_pin}
+  frequency: 433.92MHz
+  modulation_type: GFSK
+  symbol_rate: 9993
+  fsk_deviation: 20.63kHz
+  filter_bandwidth: 58kHz
+  sync_mode: "30/32"
+  sync0: 0x91
+  sync1: 0xD3
+  num_preamble: 4
+  packet_mode: true
+  packet_length: 9
+  crc_enable: true
+  output_power: 5
+
+rojaflex:
+  id: rojaflex_hub
+  cc1101_id: cc1101_radio
+  housecode: "7A1B2C3"
+  tx_repetitions: 2
+
+text_sensor:
+  - platform: rojaflex
+    rojaflex_id: rojaflex_hub
+    type: housecode
+    name: "Rojaflex Housecode"
+  - platform: rojaflex
+    rojaflex_id: rojaflex_hub
+    type: last_rx_info
+    name: "Rojaflex Last RX Info"
+  - platform: rojaflex
+    rojaflex_id: rojaflex_hub
+    type: last_tx
+    name: "Rojaflex Last TX"
+
+cover:
+  - platform: rojaflex
+    rojaflex_id: rojaflex_hub
+    name: "Rolladen 2"
+    channel: 2
+    status_sensor:
+      name: "Rolladen 2 Status"
+  - platform: rojaflex
+    rojaflex_id: rojaflex_hub
+    name: "Rolladen 3"
+    channel: 3

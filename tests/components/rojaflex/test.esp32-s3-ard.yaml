@@ -1,0 +1,8 @@
+substitutions:
+  cs_pin: GPIO12
+  gdo0_pin: GPIO3
+
+packages:
+  spi: !include ../../test_build_components/common/spi/esp32-s3-ard.yaml
+
+<<: !include common.yaml

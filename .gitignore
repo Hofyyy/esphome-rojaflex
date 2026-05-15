@@ -1,0 +1,15 @@
+# ESPHome build artifacts and secrets
+/.esphome/
+/secrets.yaml
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Editor / tooling
+/.claude/
+/.vscode/
+/.idea/
+
+# macOS
+.DS_Store
