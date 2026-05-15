@@ -48,7 +48,7 @@ T-Embed CC1101 / LilyGO factory pinout (matches `examples/cc1101_recv_irq` and `
 
 ## Build notes
 
-- Framework is **Arduino** (`framework: type: arduino` in the YAML). The component itself uses only stock ESPHome APIs and the upstream `cc1101` component — no Arduino-specific calls — so a switch to `esp-idf` would shrink the binary and speed up boot. Not done yet because it hasn't been verified on the T-Embed CC1101; treat it as an open optimization.
+- Framework is **esp-idf** (`framework: type: esp-idf`, `version: recommended`). The component itself uses only stock ESPHome APIs and the upstream `cc1101` component — no Arduino-specific calls. The switch from arduino to esp-idf was verified on the T-Embed CC1101 on 2026-05-15: firmware.bin shrank by ~88 kB / −10.6 % (and static RAM by ~1.5 kB), OTA upload ~0.86 s faster due to the smaller image. Boot time measured identical between the two frameworks on this hardware — the perceived speedup is the OTA, not the boot. Arduino still builds (the upstream cc1101 + our component are framework-portable) but is no longer the default.
 
 ## Use as external component
 
