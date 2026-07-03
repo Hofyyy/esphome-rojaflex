@@ -80,27 +80,60 @@ spi:
   mosi_pin: GPIO9
   miso_pin: GPIO10
 
-# Power-enable and antenna switch: declared as switches with
-# restore_mode ALWAYS_ON so ESPHome drives them HIGH BEFORE the cc1101
+# Power-enable, antenna switch and bus-CS isolation: declared as switches
+# with restore_mode ALWAYS_ON so ESPHome drives them HIGH BEFORE the cc1101
 # component initializes (avoids the pin-muxing race from Phase 0).
+#
+# The T-Embed CC1101 shares its SPI bus with SD card, display and nRF24.
+# If their CS pins float LOW during boot they contend MISO and the CC1101
+# SPI verification fails → "cc1101 is marked FAILED". Driving all CS pins
+# HIGH before CC1101 setup prevents this (verified in debug sessions).
+#
+# setup_priority: HARDWARE (200) runs BEFORE the cc1101 component (DATA=100),
+# matching the debug firmware's init order: pins HIGH first, then SPI/CC1101.
 switch:
   - platform: gpio
     id: pwr_en
     pin: GPIO15
     restore_mode: ALWAYS_ON
     internal: true
+    setup_priority: 200
 
   - platform: gpio
     id: antenna_sw0
     pin: GPIO48
     restore_mode: ALWAYS_ON
     internal: true
+    setup_priority: 200
 
   - platform: gpio
     id: antenna_sw1
     pin: GPIO47
     restore_mode: ALWAYS_ON
     internal: true
+    setup_priority: 200
+
+  # SPI bus isolation — keep these HIGH so they don't pull MISO low.
+  - platform: gpio
+    id: sd_cs
+    pin: GPIO13
+    restore_mode: ALWAYS_ON
+    internal: true
+    setup_priority: 200
+
+  - platform: gpio
+    id: display_cs
+    pin: GPIO41
+    restore_mode: ALWAYS_ON
+    internal: true
+    setup_priority: 200
+
+  - platform: gpio
+    id: nrf24_cs
+    pin: GPIO44
+    restore_mode: ALWAYS_ON
+    internal: true
+    setup_priority: 200
 
 # Native upstream cc1101 component — verified working on T-Embed CC1101 in Phase 0.
 cc1101:
