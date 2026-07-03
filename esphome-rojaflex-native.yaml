@@ -28,6 +28,10 @@ esp32:
   framework:
     type: esp-idf
     version: recommended
+    sdkconfig_options:
+      # Workaround for ESP-IDF 5.5.4 interrupt watchdog panics during
+      # USB-Serial-JTAG ISR install and SPI peripheral claim/free.
+      CONFIG_ESP_INT_WDT_TIMEOUT_MS: "5000"
 
 wifi:
   ssid: !secret wifi_ssid
